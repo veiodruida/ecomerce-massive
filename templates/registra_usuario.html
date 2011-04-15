@@ -1,0 +1,152 @@
+{% extends "base_layout.html" %}
+
+{% block extralinks %}
+{% endblock %}
+
+{% block extracss %}
+
+/* float clearing for IE6 */
+* html .clearfix{
+  height: 1%;
+  overflow: visible;
+}
+
+/* float clearing for IE7 */
+*+html .clearfix{
+  min-height: 1%;
+}
+
+/* float clearing for everyone else */
+.clearfix:after{
+  clear: both;
+  content: ".";
+  display: block;
+  height: 0;
+  visibility: hidden;
+  font-size: 0;
+}
+
+
+div.error-box  {
+    border: 1px solid #d00000;
+    background-color: #F79992;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    margin: 0.5em 0;
+    padding: 6px 12px;
+    color: white;
+}
+
+div.error-box div.title  {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+div.error-msg {
+    width: 250px;
+    color: #c00;
+    float: left;
+}
+
+
+.field {
+  width: 110px;
+  margin-bottom: 15px;
+  height: 50px;
+
+}
+.double_field {
+  width: 230px;
+  margin-bottom: 15px;
+  height: 50px;
+
+}
+
+.passwd_field {
+  width: 390px;
+  margin-bottom: 15px;
+  height: 50px;
+}
+
+#quantity_box {
+  margin-bottom: 15px;
+}
+
+
+
+{% endblock extracss %}
+
+{% block extrascripts %}
+{% endblock %}
+
+
+{% block extrajs %}
+
+{% endblock extrajs %}
+
+{% block content %}
+
+   <div id="main">
+			<div id="twocolumns">
+				<div class="twocolumns-holder">
+					<div id="content">
+						<div class="box">
+							<div class="box-t"></div>
+							<div class="box-c">
+								<h1><span class="mark" style="color: #000;">Signup or <a href="/user/login/">Login</a></span></h1>
+								<a href="#main-nav" class="accessibility">skip to main navigation</a>
+
+                 <!-- main content area div -->
+    {% if form.errors %}
+        <div class="error-box">
+            <div class="title">There was a problem, please see the error messages below.</div>
+            <div>{{ form.errors }}</div>
+        </div>
+    {% endif %}
+
+      <div>User signup coming soon!</div>
+
+                <form  class="cadform" id="id_cadform" method="POST" >{% csrf_token %} 
+                  <div>
+                  	<h2>Digite seu Nome completo</h2>
+                    <div class="field">{{ form.nome_completo }}<div class="error-msg">{% if form.errors.nome_completo %}{{ form.errors.nome_completo }}{% endif %}</div></div>
+                    
+                    <h2>Senha</h2>
+                    <div class="field">{{ form.senha }}<div class="error-msg">{% if form.errors.senha %}{{ form.errors.senha }}{% endif %}</div></div>
+
+                    <h2>Redigite sua senha</h2>
+                    <div class="field">{{ form.senha_verifica }}<div class="error-msg">{% if form.errors.senha_verifica %}{{ form.errors.senha_verifica }}{% endif %}</div></div>
+                  
+                    <h2>Email </h2>
+                    <div class="field">
+                    	<table id="table_mensagem_registra_email" width="600">
+                    	<tr>
+                    		<td id="email">
+	                    	{{ form.email }}
+	                    	</td>
+	                    	<td id="email" width="600">
+	                    	**O seu email será o seu registro 
+	                    	</td>
+                    	</tr>
+	                    	
+                    	</table>
+                    	<div class="error-msg">{% if form.errors.email %}{{ form.errors.email }}{% endif %}
+                    	</div>
+                    </div>
+
+                    <p><input type="submit"  value="Registrar" alt="Registrar" id="registrar"/></p>
+                  </div>
+                </form>
+		</div>
+							<div class="box-b"></div>
+						</div>
+
+					</div>
+				</div>
+			</div> 
+			
+         {% include "header.html" %}
+			
+		</div> <!-- end main -->
+	
+{% endblock content %}	

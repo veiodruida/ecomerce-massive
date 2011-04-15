@@ -1,0 +1,4 @@
+django
+oauth
+python-openid
+south

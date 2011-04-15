@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block extralinks %}{% endblock %}
+{% block extracss %}{% endblock %}
+
+{% block extrascripts %}
+    <script type="text/javascript" src="/media/js/jquery.countdown.js"></script>
+	<script type="text/javascript" src="/media/js/jquery.progressbar/js/jquery.progressbar.js"></script>
+{% endblock %}
+
+
+{% block extrajs %}
+
+  $(document).ready(function()
+  {
+	
+	{% if not oferta.ativo or oferta.qtd_fechamento %}
+	    $("#pb1").progressBar({{ oferta.percentagem_vendido }});
+	{% endif %}
+	
+	{% ifnotequal tempo_restante -1 %}
+	    var doneDay = new Date({{ tempo_restante }});
+	    $('div.buy-block  div.txt').countdown({until: doneDay, onExpiry: liftOff, expiryText: '<p>Essa oferta</p><p>está</p><p><strong>Finalizada!</strong></p>', 
+	    										layout: '<p><strong>{hn}</strong> {hl}</p><p><strong>{mn}</strong> {ml}</p><p><strong>{sn}</strong> {sl}</p>'});
+	{% endifnotequal %}
+
+
+  });
+
+function liftOff() {
+  $(".price").hide();
+}
+
+{% endblock extrajs %}
+
+
+{% block content %}
+
+  <div id="main">
+            <div id="twocolumns">
+                <div class="twocolumns-holder">
+                    <div id="content">
+                        <div class="box">
+                            <div class="box-t"></div>
+                            <div class="box-c">
+                                <h1>{{ oferta.titulo }}</h1>
+                                <a href="#main-nav" class="accessibility">skip to main navigation</a>
+                                <div class="asides">
+                                    <div class="aside1">
+                                        <div class="visual">
+                                            <img alt="image description" src="/media/{{oferta.imagem}}" width="438" height="291" />
+                                        </div>
+                                        <div class="fine-box">
+                                            <div class="fb-holder">
+                                                <div class="fb-block">
+                                                    <h2>Sobre a Oferta</h2>
+                                                    {{ oferta.sobre_oferta }}
+                                                    <p><strong><a href="#">Leia o FAQ sobre a oferta</a></strong> for the basics</p>
+                                                </div>
+                                                <div class="fb-block">
+                                                    <h2>Destaques</h2>
+                                                    <ul>{{ oferta.destaque_oferta|safe }}</ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="buy">
+                                        <div class="b-frame">
+                                            <div class="price">
+                                                <div class="frame">
+                                                    <a href="{{ oferta.get_checkout_url }}"><strong>R$ {{ oferta.preco_oferta|floatformat }}</strong> <span>Comprar</span></a>
+                                                </div>
+                                            </div>
+                                            <div class="details">
+                                                <div class="details-holder">
+                                                    <dl>
+                                                        <dt>Valor</dt>
+                                                        <dd><strong>R$ {{ oferta.preco_varejo|floatformat }}</strong></dd>
+                                                    </dl>
+                                                    <dl class="list2">
+                                                        <dt>Descounto</dt>
+                                                        <dd><strong>{{ oferta.porcentagem_desconto|floatformat }}%</strong></dd>
+                                                    </dl>
+                                                    <dl class="list3">
+                                                        <dt>Economia de</dt>
+                                                        <dd><strong>R$ {{ oferta.valor_desconto|floatformat }}</strong></dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                            <a class="buy-for-friend" href="#">
+                                                <span><strong>Compre para um amigo</strong></span>
+                                            </a>
+                                            <div class="buy-block time">
+                                                <h3>Tempo Restante dessa oferta</h3>
+                                                <div class="txt">
+                          {% ifequal tempo_restante -1 %}
+                            Vendido!!!
+                          {% endifequal %}
+                          {% comment %}
+                                                    <p><strong>1</strong> hour</p>
+                                                    <p><strong>59</strong> minutes</p>
+                                                    <p><strong>22</strong> seconds</p>
+                                          
+                          {% endcomment %}
+                                                </div>
+                                            </div>
+                                            <div class="buy-block">
+                                                <div class="oferta-txt">
+                                                    <h3>{{ oferta.num_vendido }} Quantidade vendido</h3>
+                          {% if oferta.ativo %}
+                                                      <p>Fecha quando {{ oferta.qtd_fechamento }} ofertas forem vendidas e até {{ oferta.data_fechamento }}</p>
+                          {% else %}
+                            <div id="pb1" class="pb1"></div>
+                            <p>Precisa de {{ oferta.num_necessario_fechamento }} para fechar essa oferta</p>
+                          {% endif %}
+                                                </div>
+                        {% if oferta.ativo %}
+                                                <div class="oferta-state">
+                                                    <strong>Oferta está valendo</strong>
+                                                    <img alt="oferta está valendo" src="/media/images/ico-oferta-on.gif" width="38" height="38" />
+                                                </div>
+                        {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-b"></div>
+                        </div>
+                        <div class="box box2">
+                            <div class="box-t">
+                            
+                            
+                            </div>
+                            <div class="box-c">
+                            <!-- Mapa -->
+		                         	{{ form.map }}
+							        {{ form.media.js }}
+							        <script type="text/javascript">
+							            window.myobj = {
+							                markerOver: function() { this.openInfoWindow(); },
+							                markerOut: function() { this.closeInfoWindow(); }
+							            };
+							        </script>
+					              <!-- Mapa -->   
+                                <div class="content-area">
+                                    <p>{{ oferta.descricao|safe }}</p>
+                                </div>
+                                <div class="aside2">
+                                    <h2>{{ oferta.anunciante }}</h2>
+                                    <ul class="company-list">
+                                        <li>
+                                            <strong class="title">Aroma Spa</strong>
+                                            {% if oferta.anunciante.website %}<div class="url"><a href="{{ oferta.anunciante.website }}">{{ oferta.anunciante.website }}</a></div>{% endif %}
+                                            <div class="address">{{ oferta.get_endereco_completo }}</div>
+                                            <div class="phone">{{ oferta.get_telefones }}</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="box-b">
+                                     
+                            </div>
+                        
+                        </div>
+                    </div>
+                    <div id="sidebar">
+                        <div class="sb-box">
+                            <div class="t"></div>
+                            <div class="c">
+                                <div class="content">
+                                    <h2>Compartilha esta oferta!</h2>
+                                    <ul class="social-services">
+                                        <li>
+
+										<script type="text/javascript">
+										function callPublish(msg, attachment, action_link) {
+										  FB.ensureInit(function () {
+										    FB.Connect.streamPublish('', attachment, action_link);
+										  });
+										}</script>
+
+                                            <a href="" onclick="callPublish('',{'name':'You should get this Massive Coupon!','href':'http://www.massivecoupon.com','description':'{{ oferta.titulo }}'},null);return false;">
+
+                                                <img alt="facebook" src="/media/images/ico-facebook.gif" width="63" height="53" />
+                                                <strong>facebook</strong>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a target="_blank" href="http://twitter.com/home?status={{ oferta.title}} http://massivecoupon.com">
+                                                <img alt="twitter" src="/media/images/ico-twitter.gif" width="63" height="53" />
+                                                <strong>twitter</strong>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="mailto:?body={{ oferta.title }} http://www.massivecoupon.com/ofertas/{{ oferta.city}}/{{ oferta.slug }}/?utm_campaign=VisitorReferral&amp;utm_medium=email&amp;utm_source=anonymous">
+                                                <img alt="Email a friend!" src="/media/images/ico-email.gif" width="63" height="53" />
+                                                <strong>Email a friend!</strong>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="give-box">
+                                        <div class="holder">
+                                            <h3>Give a Massive Coupon as a Gift!</h3>
+                                            <div class="give-txt">
+                                                <img class="png" alt="image description" src="/media/images/ico-coupon.png" width="74" height="47" />
+                                                <a class="btn-buy-gift-card" href="#">Buy Gift Card</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="b"></div>
+                        </div>
+                        <div class="sb-box business">
+                            <div class="t"></div>
+                            <div class="c">
+                                <div class="content">
+                                    <strong class="title"><span>Get Your Business on</span> <img alt="MassiveCoupon.com" src="/media/images/logo4.gif" width="69" height="30" /></strong>
+                                    <div class="business-txt">
+                                        <img alt="image description" src="/media/images/ico-business.gif" width="48" height="40" />
+                                        <p><a href="#"><strong>Learn <span>More</span></strong></a> about how MassiveCoupon can help bring tons of customers to your door</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="b"></div>
+                        </div>
+                        <div class="sb-box">
+                            <div class="t"></div>
+                            <div class="c">
+                                <div class="content">
+                                    <h3>Como funcionam as Ofertas Clipper</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="b"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            
+         {% include "header.html" %}
+            
+        </div> <!-- end main -->
+    
+{% endblock content %}    

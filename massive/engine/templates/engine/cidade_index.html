@@ -1,0 +1,40 @@
+{% extends "base_layout.html" %}
+
+{% block extralinks %}{% endblock %}
+{% block extracss %}{% endblock %}
+{% block extrajs %}{% endblock %}
+
+{% block middle %}
+<div id="featured-deal">
+	<h1>Destaque em {{ cidade }}  IP: </h1>
+	{% for od in destaque %}
+		<a href="{{ od.slug }}">
+					  	  <img src="/media/{{ od.imagem}}"  class="bn" width="60" height="60"/>
+					<br />
+						{{ od.titulo }}
+						
+		</a>
+	{% endfor %}
+	<h1>Ofertas em {{ cidade }}</h1>
+	<br /><br />
+	{% for o in ofertas %}
+		<div class="produto_thumbnail">
+			<a href="{{ o.slug }}">
+				  	  <img src="/media/{{ o.miniatura}}"  class="bn" width="60" height="60"/>
+				<br />
+					{{ o.titulo }}
+			</a><br />
+			Tempo restante<br />
+			{{ o.tempo_restante }}<br />
+			Vendidos já<br />
+			{{ o.num_vendido }}<br />
+			 Preco antigo<br />
+			{{ o.preco_varejo }}<br />
+			Preco Venda<br /> 
+			{{ o.preco_oferta }}<br />
+			Porcentagem desconto<br /> 
+			{{ o.porcentagem_desconto }}%<br />
+			
+		</div>
+	{% endfor %}
+{% endblock middle %}	

@@ -1,0 +1,30 @@
+{% extends "base_layout.html" %}
+
+{% block extralinks %}{% endblock %}
+{% block extracss %}{% endblock %}
+{% block extrajs %}{% endblock %}
+
+{% block middle %}
+<div id="featured-deal">
+    <h2>{{ oferta_estreia }}</h2>
+    <a href="{{ oferta_estreia.get_absolute_url }}">Click to see more</a>
+</div>
+
+<div id="deals-list">
+    {% for oferta in outras_ofertas %}
+    <div class="deal">
+        <h3>{{ oferta }}</h3>
+        <a href="{{ oferta.get_absolute_url }}">Click to see more</a>
+    </div>
+    {% endfor %}
+    
+     {% for oferta in ofertas %}
+    <div class="deal">
+        <h3>{{ oferta }}</h3>
+        <a href="{{ oferta.get_absolute_url }}">Click to see more</a>
+    </div>
+    {% endfor %}
+    
+</div>
+{% endblock middle %}	
+

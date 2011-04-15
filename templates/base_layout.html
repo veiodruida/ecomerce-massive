@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block extralinks %}{% endblock %}
+{% block extracss %}{% endblock %}
+{% block extrajs %}{% endblock %}
+
+{% block content %}
+
+<div id="main">
+    {% block header %}
+        {% include "header.html" %}
+    {% endblock header %}
+
+    <div id="middle">
+        {% block middle %}
+        {% endblock middle %}
+    </div>
+
+    {% block footer %}
+        {% include "footer.html" %}
+    {% endblock footer %}
+</div>
+
+{% endblock content %}
